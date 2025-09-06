@@ -1,0 +1,24 @@
+anyio==4.10.0
+asgiref==3.9.1
+certifi==2025.8.3
+charset-normalizer==3.4.3
+distro==1.9.0
+Django==5.2.4
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.27.2
+idna==3.10
+numpy @ file:///home/builder/.termux-build/python-numpy/src/dist/numpy-2.2.5-cp312-cp312-linux_aarch64.whl#sha256=a6f12e1635a925c198e4730a48128fc7360f2bd525555d0950e26cadd9e31913
+openai==1.39.0
+pydantic==1.10.22
+python-decouple==3.8
+python-dotenv==1.1.1
+requests==2.32.5
+setuptools==80.9.0
+sniffio==1.3.1
+sqlparse==0.5.3
+tqdm==4.67.1
+typing_extensions==4.15.0
+tzdata==2025.2
+urllib3==2.5.0
+wheel==0.45.1

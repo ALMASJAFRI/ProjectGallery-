@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 style="font-size:2rem;font-weight:bold;text-align:center;margin-top:20px;" id="no_item"></h1>
+<script>
+    const message = "PAY NOW TO GRAB YOUR PROJECT!!";
+    let j = 0;
+    function typingno() {
+        if (j< message.length) {
+            document.getElementById("no_item").innerHTML += message.charAt(j);
+            j++;
+            setTimeout(typingno, 100); // Speed of typing in ms
+        }
+    }
+    typingno();
+</script>
+<div class="flex justify-center">  
+  <div class="mt-5">  
+    <div class="card bg-white w-96 shadow-xl rounded-2xl border border-gray-200 hover:shadow-2xl transition-all duration-300">  
+      <figure class="px-8 pt-8">  
+        <img  
+          src="{{item.image.url}}"  
+          alt="Shoes"  
+          class="rounded-2xl object-cover shadow-md" />  
+      </figure>  
+      <div class="card-body space-y-4">  
+        <h2 class="text-3xl font-extrabold text-center text-gray-800 tracking-wide">{{item.project}}</h2>  
+
+        <div class="text-right">  
+          <h2 class="text-xl font-semibold text-gray-600">CATEGORY: <span class="text-gray-800">{{item.category}}</span></h2>  
+        </div>   
+
+        <div class="text-right">  
+          <h2 class="text-xl font-semibold text-gray-600">PRICE: <span class="text-green-600 font-bold">{{amount}}</span></h2>  
+        </div>   
+
+        <div class="card-actions justify-center">  
+          <form action="https://test.payu.in/_payment" method="post">  
+            <input type="hidden" name="key" value="{{key}}" />  
+            <input type="hidden" name="txnid" value="{{txnid}}"/>  
+            <input type="hidden" name="productinfo" value="{{productinfo}}"/>  
+            <input type="hidden" name="amount" value="{{amount}}"/>  
+            <input type="hidden" name="email" value="{{email}}" />  
+            <input type="hidden" name="firstname" value="{{firstname}}"/>  
+            <input type="hidden" name="lastname" value="....." />  
+            <input type="hidden" name="surl" value="{{surl}}" />  
+            <input type="hidden" name="furl" value="{{furl}}" />  
+            <input type="hidden" name="phone" value="{{phone}}" />  
+            <input type="hidden" name="hash" value="{{hash}}" />  
+            <button class="btn btn-primary">Pay Now</button>  
+          </form>  
+        </div>  
+      </div>  
+    </div>  
+  </div>  
+</div>
+
+
+
+{% endblock %}

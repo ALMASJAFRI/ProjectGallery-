@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ request.path }}</title>
+
+  <!-- Tailwind (offline build) -->
+  <script src="{% static 'css/tailwind.js' %}"></script>
+
+  <!-- DaisyUI core styles -->
+  <link href="{% static 'css/daisyui.css' %}" rel="stylesheet">
+
+  <!-- DaisyUI themes -->
+  <link href="{% static 'css/themes.min.css' %}" rel="stylesheet">
+  <!-- Htmx -->
+  <script src="{% static 'js/htmx.min.js' %}"></script>
+</head>
+<body class="flex flex-col min-h-screen font-sans">
+  
+  <!-- Navbar -->
+<nav class="w-full bg-black shadow-md px-4 py-2 flex items-center justify-between flex-wrap">
+  
+  <!-- Left: Dashboard + Logo -->
+  <div class="flex items-center space-x-3">
+    {% if user.is_seller and request.path == '/' %}
+      <a href="{% url 'sellerdash' %}" class="btn btn-primary btn-sm">Dashboard</a>
+    {% endif %}
+    <a href="/" class="flex items-center space-x-2">
+      <img src="{% static 'images/logo.jpg' %}" class="rounded-full w-10 h-10" alt="Logo">
+      <span class="font-bold text-lg">Project Gallery</span>
+    </a>
+  </div>
+
+  <!-- Center: Search -->
+  <div class="flex-grow flex justify-center mt-3 md:mt-0">
+    <div class="form-control w-full max-w-xs">
+      <div class="input-group">
+        {% if request.path == '/sellerdas/' and user.is_seller %}
+          <input 
+            type="text" 
+            placeholder="Search…" 
+            class="input input-bordered w-full"
+            hx-get="{% url 'searchsell' %}" 
+            hx-target="#cardadd"
+            hx-swap="innerHTML"
+            hx-trigger="keyup"
+            name="element"
+          />
+        {% else %}
+          <input 
+            type="text" 
+            placeholder="Search…" 
+            class="input input-bordered w-full"
+            hx-get="{% url 'search' %}" 
+            hx-target="#cardadd"
+            hx-swap="innerHTML"
+            hx-trigger="keyup"
+            hx-params="*"
+            name="element"
+          />
+        {% endif %}
+        <button class="btn btn-square btn-sm">🔍</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Auth Buttons -->
+  <div class="flex items-center space-x-2 mt-2 md:mt-0">
+    <a href="{% url 'cart' %}" class="btn btn-success z-10">WISHED</a>
+    {% if user.is_authenticated %}
+      <label for="register" class="btn btn-error z-10">Register</label>
+    {% else %}
+      <label for="login" class="btn btn-error btn-sm z-10">Login</label>
+      <label for="register" class="btn btn-error btn-sm z-10">Register</label>
+    {% endif %}
+  </div>
+</nav>
+  
+  <div class="fixed left-0 top-16 h-full z-50">
+  <div class="bg-gray-100 rounded-lg w-40 p-2 ms-2 mt-6 ml-2 shadow-lg">
+    <details class="w-full">
+      <summary class="cursor-pointer font-semibold px-2 py-1 hover:bg-gray-100 rounded">
+        MENU
+      </summary>
+      <ul class="mt-2 space-y-1">
+        <!-- Logout -->
+        <li>
+          <a href="{% url 'log_out' %}" 
+             class="block px-2 py-1 rounded hover:bg-gray-200">
+            Log Out
+          </a>
+        </li>
+        <div class="dropdown dropdown-right h-full">
+          
+         <div tabindex="0" role="button" class="btn m-1 ">Categories </div>
+        <ul tabindex="0" class="dropdown-content menu bg-gray-100 rounded-box z-1 w-52 p-2 shadow-sm">
+          {% if categories %}
+          {% for category in categories %}
+         <li><a hx-get="{% url 'search' %}?element={{category.cat_name}}" hx-target="#cardadd" hx-swap="innerHTML">{{category.cat_name}}</a></li>
+          {% endfor %}
+          {% endif %}
+        </ul>
+        </div>
+        <li>
+          <a href="{% url 'profile' %}" 
+             class="block px-2 py-1 rounded hover:bg-gray-200">
+            Profile
+          </a>
+        </li>
+      </ul>
+    </details>
+  </div>
+</div>
+
+  <!-- Sidebar + Main -->
+  <main class="flex-1 bg-base-100 relative">
+    
+   <div class="bg-gray-100 min-h-screen p-4">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Messages + Components -->
+  <div id="messagesbase">{% include 'messages.html' %}</div>
+  <div id="logincomponent">
+    <input type="checkbox" id="login" class="modal-toggle" />
+<div class="modal" role="dialog">
+  <div class="modal-box relative">
+    <label for="login" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <h5 class="text-lg font-bold">Please Login...!</h5>
+    <form
+      method="POST"
+      class="mt-3"
+      action="{% url 'login_page' %}"
+    >
+      {% csrf_token %}
+      <div id="messagelogin">
+        {% include 'messages.html' %}
+      </div>
+
+      <div class="mb-2">
+        <input
+          type="text"
+          placeholder="@email"
+          class="input input-bordered w-full"
+          name="email"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <input
+          type="password"
+          placeholder="Password"
+          class="input input-bordered w-full"
+          name="password"
+          required
+        />
+      </div>
+      <div class="mb-2">
+        <input
+          type="text"
+          placeholder="@name"
+          class="input input-bordered w-full"
+          name="name"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full mt-2">Login</button>
+
+      <div class="mt-3 text-center">
+        <h3 class="font-semibold">Don't Have an Account?</h3>
+        <label for="register" class="btn btn-success mt-2">Register</label>
+      </div>
+    </form>
+  </div>
+</div>
+  </div>
+  <div id="registercomponent">{% include 'accounts/register.html' %}</div>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white py-4 mt-auto">
+  <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+    <div class="flex gap-6 text-sm">
+      <a href="{% url 'about_us' %}" >About Us</a>
+      <a href="{% url 'contact_us' %}" >Contact Us</a>
+    </div>
+    <p class="text-center text-sm mt-2 md:mt-0">© 2025 Project Gallery</p>
+  </div>
+</footer>
+</body>
+</html>

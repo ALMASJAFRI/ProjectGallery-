@@ -1,0 +1,70 @@
+{% include 'messages.html' %}
+
+<!-- Cart Summary -->
+<div class="card bg-blue-100 text-black w-full mt-5 mb-3">
+  <div class="card-body">
+    <h2 class="text-3xl font-bold">Cart Details !!</h2>
+    <h2 class="text-2xl font-bold">TOTAL ITEMS: {{ total_items }}</h2>
+    <h2 class="text-lg font-bold">TOTAL COST: ₹{{ total }}</h2>
+  </div>
+</div>
+
+{% if items %}
+<!-- Items Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 px-5">
+  {% for item in items %}
+  <div class="card bg-base-100 shadow-md hover:shadow-xl transition duration-300">
+    <a href="{% url 'detail' item.det.id %}" class="absolute inset-0 z-0"></a>
+    <figure>
+      <img 
+        src="{{ item.det.image.url }}" 
+        alt="{{ item.det.category }}" 
+        class="rounded-xl w-full h-52 object-cover" 
+      />
+    </figure>
+    <div class="card-body relative z-10">
+      <!-- Project Title -->
+      <h1 class="card-title text-2xl font-bold text-gray-800">
+        {{ item.project }}
+      </h1>
+
+      <!-- Category -->
+      <p class="text-lg text-gray-500">Category: {{ item.det.category }}</p>
+
+      <!-- Price -->
+      <p class="text-xl font-semibold text-green-600">
+        ₹{{ item.det.price }}/-
+      </p>
+
+      <!-- Availability -->
+      <span class="badge badge-primary text-lg">Available</span>
+
+      <!-- Remove Button -->
+      <button 
+        class="btn bg-red-600 hover:bg-red-700 text-white text-lg mt-3"
+        hx-get="{% url 'removefromcart' item.id %}" 
+        hx-target="#cartdet" 
+        hx-swap="innerHTML">
+        Remove Wish
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<!-- Empty Cart Typing Effect -->
+<h1 id="no_item" class="text-2xl font-bold text-center mt-6"></h1>
+<script>
+  const message = "YOU HAVE NOT ADDED ANYTHING!!";
+  let j = 0;
+  function typingno() {
+    if (j < message.length) {
+      document.getElementById("no_item").innerHTML += message.charAt(j);
+      j++;
+      setTimeout(typingno, 100);
+    }
+  }
+  typingno();
+</script>
+{% endif %}

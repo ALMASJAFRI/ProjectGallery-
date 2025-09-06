@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto p-6">
+  <div class="card bg-base-100 shadow-xl rounded-2xl">
+    <div class="card-body">
+      <h2 class="card-title text-2xl font-bold text-center">Contact Us</h2>
+      <p class="mt-3 text-gray-700 text-center">
+        Feel free to reach out for collaborations, contributions, or just to connect!
+      </p>
+      
+      <div class="mt-6 grid gap-4">
+        <!-- Email -->
+        <a href="mailto:djangoprojects954@gmail.com" 
+           class="flex items-center gap-3 p-4 rounded-xl bg-gray-100 hover:bg-blue-50 transition shadow-sm">
+          <span class="text-xl">📧</span>
+          <span class="font-medium text-blue-600">djangoprojects954@gmail.com</span>
+        </a>
+
+        <!-- LeetCode -->
+        <a href="https://leetcode.com/u/Almasjafri/" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-3 p-4 rounded-xl bg-gray-100 hover:bg-yellow-50 transition shadow-sm">
+          <span class="text-xl">🧩</span>
+          <span class="font-medium text-blue-600">Almasjafri (LeetCode)</span>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/ALMASJAFRI" target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-3 p-4 rounded-xl bg-gray-100 hover:bg-gray-200 transition shadow-sm">
+          <span class="text-xl">💻</span>
+          <span class="font-medium text-blue-600">ALMASJAFRI (GitHub)</span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/almas-jafri-b9b47b302/" 
+           target="_blank" rel="noopener noreferrer"
+           class="flex items-center gap-3 p-4 rounded-xl bg-gray-100 hover:bg-blue-100 transition shadow-sm">
+          <span class="text-xl">🌐</span>
+          <span class="font-medium text-blue-600">Almas Jafri (LinkedIn)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 style="font-size:2rem;font-weight:red;text-align:center;margin-top:20px;" id="no_item"></h1>
+<script>
+    const message = "Payment Failed!!";
+    let j = 0;
+    function typingno() {
+        if (j< message.length) {
+            document.getElementById("no_item").innerHTML += message.charAt(j);
+            j++;
+            setTimeout(typingno, 100); // Speed of typing in ms
+        }
+    }
+    typingno();
+</script>
+<div class="flex justify-center"></div>
+<div class="card w-96 bg-black-100 shadow-sm">
+  <div class="card-body">
+    <span class="badge badge-xs badge-warning">Failed</span>
+    <div class="flex justify-between">
+      <h2 class="text-3xl font-bold">Product Info:{{product}}</h2>
+    </div>
+    <ul class="mt-6 flex flex-col gap-2 text-xs">
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+        <span>Transaction id:{{txnid}}</span>
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+        <span>Price:{{amount}}</span>
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+        <span>Email:{{email}}</span>
+      </li>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+        <span>Payment id:{{paymentid}}</span>
+      </li>
+    </ul>
+    <div class="mt-6">
+      <a href="{% url 'home' %}" class="btn btn-primary btn-block">Home</a>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card w-96 bg-black-100 shadow-sm">
+  <div class="card-body">
+    <span class="badge badge-xs badge-warning">Failed</span>
+    <div class="flex justify-between">
+      <form method="POST"
+        hx-post='{% url "successtrue" %}'
+        hx-swap="none">
+        <input type="text" placeholder="email" name="email" value="{{user.email}}">
+        <input type="text" placeholder="status" name="status">
+        <input type="text" placeholder="productinfo" name="productinfo">
+        <input type="text" placeholder="txnid" name="txnid">
+        <input type="text" placeholder="price" name="amount">
+        <button value="submit">submit</button>
+      </form>
+    <div class="mt-6">
+      <a href="{% url 'home' %}" class="btn btn-primary btn-block">Home</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

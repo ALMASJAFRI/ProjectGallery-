@@ -1,0 +1,14 @@
+
+{% load static %}
+{% include 'messages.html' %}
+<figure class="px-6 pt-6">
+{% if data.photo %}
+    <img src="{{ data.photo.url }}" 
+         alt="Tailwind CSS chat bubble component"
+         class="rounded-full w-52 h-52 object-cover" />
+  {% else %}
+    <img src="{% static 'images/user-circle-isolated-icon-round-600nw-2459622791.jpg' %}" 
+         alt="Tailwind CSS chat bubble component"
+         class="rounded-full w-52 h-52 object-cover" />
+  {% endif %}
+</figure>

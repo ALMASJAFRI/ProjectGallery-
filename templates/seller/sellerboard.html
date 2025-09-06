@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+ <h2 id="welcome" style="font-size: 2rem; font-weight: bold; text-align:center; margin-top: 20px;"></h2>
+<script>
+    const text = "Welcome {{user.name|escapejs}} Sell Now";
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            document.getElementById("welcome").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 100); // Speed of typing in ms
+        }
+    }
+    typing();
+</script>
+<!-- Sell Button -->
+<div class="flex justify-end">
+  <button class="btn btn-success me-3" onclick="document.getElementById('sell').showModal()">Sell</button>
+</div>
+<!-- Modal structure -->
+<dialog id="sell" class="modal">
+  <div class="modal-box">
+    <div class="flex justify-between items-center border-b pb-2">
+      <h5 class="font-bold text-lg">LIST ITEM</h5>
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost">✕</button>
+      </form>
+    </div>
+
+    <div class="py-4">
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        hx-post="{% url 'additem' %}"
+        hx-target="#cardadd"
+        hx-swap="innerHTML"
+      >
+        {% csrf_token %}
+
+        <div>
+          <label class="label font-semibold">Project ZIP File</label>
+          <input type="file" class="file-input file-input-bordered w-full rounded-full" name="item_file" required>
+        </div>
+
+        <div>
+          <label class="label font-semibold">Project Document</label>
+          <input type="file" class="file-input file-input-bordered w-full rounded-full" name="document" required>
+        </div>
+
+        <div>
+          <label class="label font-semibold">Project Name</label>
+          <input type="text" placeholder="@name of project" class="input input-bordered w-full rounded-full" name="item_name" required>
+        </div>
+
+        <div>
+          <label class="label font-semibold">Project Description</label>
+          <input type="text" placeholder="@project description" class="input input-bordered w-full rounded-full" name="item_description">
+        </div>
+
+        <div>
+          <label class="label font-semibold">Price</label>
+          <input type="number" min="0" step="0.001" placeholder="@price" class="input input-bordered w-full rounded-full" name="item_price" required>
+        </div>
+
+         <div>
+           <label class="label font-semibold">Category</label>
+          <select name="item_category" required  class="select select-bordered w-full rounded-full">
+           <option disabled selected>Full Stack</option>
+              {% for category in categories %}
+           <option value="{{category.cat_name}}">{{category.cat_name}}</option>
+              {% endfor %}
+          </select>
+          </div>
+
+        <div>
+          <label class="label font-semibold">Project Image</label>
+          <input type="file" accept="image/*" class="file-input file-input-bordered w-full rounded-full" name="item_image" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full mt-2">Sell it</button>
+      </form>
+    </div>
+
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+<div id="cardadd" class="mb-3" >
+    {% include "messages.html" %}
+    {% include "partials/itemcard.html" %}
+</div>
+{% endblock %}

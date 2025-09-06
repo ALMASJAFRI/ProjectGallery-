@@ -1,0 +1,11 @@
+{% include 'messages.html' %}
+      <div class="card-body max-h-64 overflow-y-auto">  
+        <h2 class="text-3xl font-bold">Features:-</h2>
+           {% if item.features %}
+        <h2 class="text-2xl font-bold">Analyzed by AI...</h2>           
+        <h2 class="text-2xl font-bold whitespace-pre-line">{{item.features}}</h2>
+           {% else %}
+           <h2 class="text-2xl font-bold">AI is analyzing please refresh....</h2>
+        <a href="#" class="btn btn-success mt-3" hx-get="{% url 'features' item.id %}" hx-target="#featurecard" hx-swap="innerHTML">refresh</a>
+           {% endif %}
+      </div> 

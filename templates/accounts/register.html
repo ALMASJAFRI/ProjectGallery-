@@ -1,0 +1,46 @@
+<!-- REGISTER MODAL -->
+<input type="checkbox" id="register" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box relative">
+    <!-- Close button -->
+    <label for="register" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <h5 class="text-lg font-bold mb-3">Please Register...!</h5>
+
+    <form
+      method="POST"
+      class="space-y-2"
+      hx-post="{% url 'register' %}"
+      hx-target="#messages"
+      hx-swap="innerHTML"
+      hx-trigger="submit"
+      hx-headers='{"Cache-Control":"no-cache"}'
+      hx-refresh="true"
+    >
+      {% csrf_token %}
+      <div id="messages">{% include 'messages.html' %}</div>
+
+      <input type="text" name="email" placeholder="@email" class="input input-bordered w-full" required>
+      <input type="password" name="password" placeholder="password" class="input input-bordered w-full" required>
+      <input type="text" name="name" placeholder="@name" class="input input-bordered w-full">
+      <input type="text" name="first_name" placeholder="@first name" class="input input-bordered w-full">
+      <input type="text" name="last_name" placeholder="@last name" class="input input-bordered w-full">
+      <input type="text" name="phone" placeholder="@Phone number" class="input input-bordered w-full">
+
+      <div class="flex gap-4 items-center mt-1">
+        <label class="flex items-center gap-1">
+          <input type="radio" name="status" value="seller" class="radio" /> Seller
+        </label>
+        <label class="flex items-center gap-1">
+          <input type="radio" name="status" value="user" class="radio" /> User
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full mt-2">Register</button>
+
+      <div class="mt-3 text-center">
+        <h3 class="font-semibold">Already Have Account?</h3>
+        <label for="login" class="btn btn-success mt-2 cursor-pointer">Login</label>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+{% if price %}
+<h1 class="h5 fw-bold text-success mb-0" style="font-size:2rem;">
+      ₹{{ price }}/-
+</h1>
+<div class="card-actions justify-end mt-5">
+           <a class="btn btn-success text-2xl" href="{% url 'initiateorder' item.id price %} ">Buy Now</a>
+</div>
+{% endif %}

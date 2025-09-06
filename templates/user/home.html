@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 id="hello" style="font-size:2rem; font-weight:bold; margin-top:20px; text-align:center;"></h1>
+<script>
+    const text = "Welcome To Your Own Project Gallery!";
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            document.getElementById("hello").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 100); // Speed of typing in ms
+        }
+    }
+    typing();
+</script>
+<div id="cardadd" class="mb-3">
+{% include 'partials/itemcard.html' %}
+</div>
+{% endblock %}

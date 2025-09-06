@@ -1,0 +1,41 @@
+{% if messages %}
+<div id="messagesbase">
+  <div class="fixed top-5 right-5 z-[9999] font-sans">
+    {% for message in messages %}
+      <div class="flash-message">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<style>
+.flash-message {
+  background-color: black;
+  color: white;
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  font-size: 15px;
+  animation: fadeInOut 5s forwards;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateY(-10px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px);}
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".flash-message").forEach(msg => {
+    msg.addEventListener("animationend", () => {
+      msg.style.display = "none";  // 🚀 hides it after fade
+    });
+  });
+});
+</script>

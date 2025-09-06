@@ -1,0 +1,85 @@
+{% if items %}
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
+  {% for item in items %}
+  <div class="relative bg-white rounded-xl shadow-md hover:shadow-2xl transition-all overflow-hidden">
+
+    <!-- Stretched link -->
+    <a href="{% url 'detail' item.id %}" class="absolute inset-0 z-20"></a>
+
+    <!-- Image -->
+    <figure class="h-48">
+      <img 
+        src="{{ item.image.url }}" 
+        alt="{{ item.category }}" 
+        class="w-full h-full object-cover"
+      />
+    </figure>
+
+    <!-- Card Body -->
+    <div class="p-4 space-y-2 relative">
+      
+      <!-- Title -->
+      <h2 class="text-xl font-bold text-gray-800">
+        {{ item.project }}
+      </h2>
+      
+      <!-- Category -->
+      <p class="text-sm text-gray-500">
+        Category: {{ item.category }}
+      </p>
+      
+      <!-- Price -->
+      <p class="text-lg font-semibold text-green-600">
+        ₹{{ item.price }}/-
+      </p>
+      
+      <span class="inline-block px-2 py-1 text-xs font-medium bg-gray-200 rounded">
+        Available
+      </span>
+      
+      {% if not request.path == '/sellerdas/' %}
+      <!-- Button (clickable despite stretched link) -->
+      <button 
+        class="btn btn-success w-full mt-3 relative z-30"
+        hx-get="{% url 'addtocart' item.id %}" 
+        hx-target="#messagesbase" 
+        hx-swap="innerHTML">
+        Add To Wished
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+  {% if not request.path == "/" and not request.path == "/search/" and not request.path == "/cart/" %}
+    <h1 id="no_item" class="text-2xl font-bold text-center mt-5"></h1>
+    <script>
+      const message = "YOU HAVE NOT SOLD ANYTHING!";
+      let j = 0;
+      function typingno() {
+          if (j < message.length) {
+              document.getElementById("no_item").innerHTML += message.charAt(j);
+              j++;
+              setTimeout(typingno, 100);
+          }
+      }
+      typingno();
+    </script>
+{% elif request.path == '/search/' and not request.path == '/' and not request.path == '/cart/' %}
+<h1 id="no_item" class="text-2xl font-bold text-center mt-5"></h1>
+    <script>
+      const message = "No Results Found !";
+      let j = 0;
+      function typingno() {
+          if (j < message.length) {
+              document.getElementById("no_item").innerHTML += message.charAt(j);
+              j++;
+              setTimeout(typingno, 100);
+          }
+      }
+      typingno();
+    </script>
+  {% endif %}
+{% endif %}
