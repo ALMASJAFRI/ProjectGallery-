@@ -52,6 +52,7 @@ def activate(request,token):
     user=User.objects.filter(token=token).first()
     if user:
         user.is_active=True
+        user.save()
         messages.success(request,"Account Activated Login now!")
         return redirect('/')
     else:
