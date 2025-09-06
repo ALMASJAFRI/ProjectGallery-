@@ -44,7 +44,7 @@ def register(request):
         
 def sendmail(email,token):
     subject="Request To Activate Account....!"
-    message=f"Please Verify Your Email\n click here http://127.0.0.1:8000/activate/{token}/"
+    message = f"Please Verify Your Email\n click here https://smartprojectgallery.onrender.com/activate/{token}/"
     from_email="djangoprojects954@gmail.com"
     recipient_list=[email]
     send_mail(subject=subject,message=message,from_email=from_email,recipient_list=recipient_list)
