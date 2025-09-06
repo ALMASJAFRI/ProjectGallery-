@@ -5,7 +5,6 @@ from accounts.decorators import is_seller
 from seller.models import project,Category,project_detail
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-import imghdr
 import threading
 import zipfile
 from django.conf import settings
