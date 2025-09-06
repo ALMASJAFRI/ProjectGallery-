@@ -159,3 +159,19 @@ LLM_KEY=config('LLM_KEY')
 LOGIN_REDIRECT_URL=config('LOGIN_REDIRECT_URL')
 PAYU_KEY=config('PAYU_KEY')
 PAYU_SALT=config('PAYU_SALT')
+
+from django.contrib.auth import get_user_model
+
+# Auto-create superuser on startup (Render-friendly)
+if os.environ.get("DJANGO_SUPERUSER_EMAIL") and os.environ.get("DJANGO_SUPERUSER_PASSWORD"):
+    try:
+        User = get_user_model()
+        if not User.objects.filter(email=os.environ["DJANGO_SUPERUSER_EMAIL"]).exists():
+            User.objects.create_superuser(
+                email=os.environ["DJANGO_SUPERUSER_EMAIL"],
+                password=os.environ["DJANGO_SUPERUSER_PASSWORD"],
+                name="Admin"
+            )
+            print("✅ Superuser created")
+    except Exception as e:
+        print("⚠️ Superuser creation skipped:", e)
