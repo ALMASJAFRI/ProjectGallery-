@@ -69,7 +69,7 @@ def login_page(request):
         if not password:
             messages.error(request,"password is required")
             return render(request,'messages.html')
-        user=authenticate(email=email,password=password)
+        user=authenticate(request,email=email,password=password)
         if not user:
             messages.error(request,"invalid credentials")
             return render(request,'messages.html')
