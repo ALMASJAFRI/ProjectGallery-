@@ -22,3 +22,4 @@ tzdata==2025.2
 urllib3==2.5.0
 wheel==0.45.1
 gunicorn==21.2.0
+filetype==1.2.0
