@@ -47,7 +47,7 @@ def sendmail(email,token):
     message = f"Please Verify Your Email\n click here https://smartprojectgallery.onrender.com/activate/{token}/"
     from_email="djangoprojects954@gmail.com"
     recipient_list=[email]
-    send_mail(subject=subject,message=message,from_email=from_email,recipient_list=recipient_list)
+    send_mail(subject=subject,message=message,from_email=from_email,recipient_list=recipient_list,fail_silently=False) 
 def activate(request,token):
     user=User.objects.filter(token=token).first()
     if user:
