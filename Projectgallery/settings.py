@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import dj_database_url
 from pathlib import Path
 import sys
+import os
 from django.core.files import locks
 from decouple import config
 # Override locks to no-op functions
