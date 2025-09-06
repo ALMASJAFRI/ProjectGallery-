@@ -4,7 +4,6 @@ from django.contrib.auth import login,logout,get_user_model,authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import uuid
-import imghdr
 from django.core.mail import send_mail
 User=get_user_model()
 
@@ -93,8 +92,8 @@ def profile(request):
     user=request.user
     return render(request,"accounts/profile.html",{'data':user})
 def validateimg(image):
-    whatis=imghdr.what(image)
-    valid=["jpeg","png"]
+    whatis=image.content_type
+    valid=["image/jpeg","image/png"]
     if whatis not in valid:
         return False
     return True        
