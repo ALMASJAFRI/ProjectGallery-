@@ -13,8 +13,8 @@ from openai import OpenAI
 User=get_user_model()
 # Create your views here.
 def is_valid_image(file):
-    form_at=imghdr.what(file.file)
-    if form_at not in ['jpeg','png']:
+    form_at=file.content_type
+    if form_at not in ['image/jpeg','image/png']:
         return False
     return True
 def is_zip(file):
