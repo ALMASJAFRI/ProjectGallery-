@@ -136,7 +136,7 @@ def inititate(request,id,price):
     order.save()
     print('hadhstr',hash_str)
     print('hashh',hashh)
-    data={'key':settings.PAYU_KEY,'email':email,'phone':phone,'firstname':first_name,'txnid':txnid,'amount':price,'productinfo':productinfo,'hash':hashh,'surl':'http://127.0.0.1:8000/successtrue/','furl':'http://127.0.0.1:8000/failedtrue/','item':detins}
+    data={'key':settings.PAYU_KEY,'email':email,'phone':phone,'firstname':first_name,'txnid':txnid,'amount':price,'productinfo':productinfo,'hash':hashh,'surl':'https://smartprojectgallery.onrender.com/successtrue/','furl':'https://smartprojectgallery.onrender.com/failedtrue/','item':detins}
     return render(request,'user/paymentinitiate.html',data)
 @csrf_exempt
 def validatepay(request):
