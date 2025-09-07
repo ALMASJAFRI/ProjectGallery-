@@ -1,3 +1,4 @@
+from django.db import transaction
 import threading 
 from django.shortcuts import render,redirect
 from django.contrib.auth import login,logout,get_user_model,authenticate
@@ -38,8 +39,7 @@ def register(request):
         user.token=token
         user.save()
         messages.success(request,"email sent")
-        t=threading.Thread(target=sendmail,args=(email,token))
-        t.start()
+        transaction.on_commit(lambda:threading.Thread(target=sendmail,args=(email,token)).start())
         return render(request,'messages.html')
     return render(request,'accounts/register.html')
         
