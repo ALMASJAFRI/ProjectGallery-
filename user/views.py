@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import render,redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -160,7 +161,7 @@ def validatepay(request):
             order.status=True
             order.save()
             projectins=project_detail.objects.filter(project__p_name=productinfo).first()
-            threading.Thread(target=sendfiles,args=(amount,projectins.id,email)).start()
+            transaction.on_commit(lambda:threading.Thread(target=sendfiles,args=(amount,projectins.id,email)).start())
             messages.success(request,"Payment Done")
             data={'txnid':txnid,'email':email,'product':productinfo,'amount':amount,'paymentid':mihpayid}
             return render(request,"accounts/successpage.html",data)
