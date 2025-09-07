@@ -32,7 +32,7 @@ def register(request):
         user.last_name=last_name
         user.name=name
         if phone:
-            user.phone=int(phone)
+            user.phone=phone
         if status=='seller':
             user.is_seller=True
         token=str(uuid.uuid4())
