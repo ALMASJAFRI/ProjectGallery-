@@ -206,7 +206,11 @@ def sendfiles(price,id,email):
         
         
 def test(request):
-    return render(request,"user/fakeresponse.html")    
+    cat=request.GET.get('category')
+    Category.objects.create(cat_name=cat)
+    messages.success(request,"Category added!!")
+    return render(request,"user/home.html")    
+                
             
         
       
