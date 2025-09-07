@@ -31,25 +31,39 @@ def unzip(path):
                 ans[file]=content 
     return ans
 def AIenhance(id):
-    ansstr=[]
-    item=project_detail.objects.filter(id=id).first()
-    rawans=unzip(item.project_file.path)
-    for name,content in rawans.items():
-        ansstr.append(f"#{name}\n code:-{content}\n")
-    ansstr="".join(ansstr)
-    print(ansstr)
-    client=OpenAI(base_url="https://openrouter.ai/api/v1",
-    api_key=settings.LLM_KEY)
-    completion=client.chat.completions.create(
-    model="deepseek/deepseek-r1-0528:free",
-    messages=[
-    {'role':'system','content':'You are a great analyzer and assistant'},
-        {'role':'user','content':f'this a code analyze and give a features of this project no code only features\n code:-{ansstr}'}],
-            temperature=0)
-    feature=completion.choices[0].message.content
-    item.features=feature
-    item.save()
-    print(feature)    
+    try:
+        ansstr = []
+        item = project_detail.objects.filter(id=id).first()
+        rawans = unzip(item.project_file.path)
+        for name, content in rawans.items():
+            ansstr.append(f"#{name}\n code:-{content}\n")
+        ansstr = "".join(ansstr)
+
+        client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=settings.LLM_KEY,
+            default_headers={
+                "HTTP-Referer": "https://smartprojectgallery.onrender.com",
+                "X-Title": "Smart Project Gallery",
+            },
+        )
+
+        completion = client.chat.completions.create(
+            model="deepseek/deepseek-r1:free",
+            messages=[
+                {"role": "system", "content": "You are a great analyzer and assistant"},
+                {"role": "user", "content": f"Analyze this code and list features only (no code):\n{ansstr}"}
+            ],
+            temperature=0,
+        )
+
+        feature = completion.choices[0].message.content
+        item.features = feature
+        item.save()
+        print("✅ Features generated:", feature)
+
+    except Exception as e:
+        print("❌ AIenhance failed:", e)
     
                 
 @login_required
