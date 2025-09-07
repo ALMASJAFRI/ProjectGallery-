@@ -94,7 +94,6 @@ def additem(request):
         project_ins= project.objects.create(p_name=name,user=request.user)
         det_ins=project_detail.objects.create(project=project_ins,project_file=file,price=price,description=description,image=image,category=cat,project_document=document)
         t=threading.Thread(target=AIenhance,args=(det_ins.id,))
-        t.daemon=False
         t.start()
         items=project_detail.objects.filter(project__user=request.user).order_by('-project__datein')
         return render(request,'partials/itemcard.html',{'items':items})
@@ -103,7 +102,6 @@ def features(request,id):
     item=project_detail.objects.filter(id=id).first()
     if not item.features:
         t=threading.Thread(target=AIenhance,args=(item.id,))
-        t.daemon=False
         t.start()
         messages.error(request,"Please retry..")   
         return render(request,"partials/features.html",{'item':item})
