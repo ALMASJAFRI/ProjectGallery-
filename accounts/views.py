@@ -39,7 +39,8 @@ def register(request):
         user.token=token
         user.save()
         messages.success(request,"email sent")
-        threading.Thread(target=sendmail,args=(email,token)).start()
+        #threading.Thread(target=sendmail,args=(email,token)).start()
+        sendmail(email,token)
         return render(request,'messages.html')
     return render(request,'accounts/register.html')
         
