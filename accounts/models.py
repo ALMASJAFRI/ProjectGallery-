@@ -29,7 +29,7 @@ class Custom_User(AbstractBaseUser,PermissionsMixin):
     phone=models.CharField(null=True,blank=True)
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
-    photo=CloudinaryField('image')
+    photo=CloudinaryField('image',null=True,blank=True)
     token=models.CharField()
     is_staff=models.BooleanField(default=True)
     is_active=models.BooleanField(default=False)
