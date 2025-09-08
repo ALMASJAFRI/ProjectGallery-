@@ -30,11 +30,11 @@ def unzip(path):
                 content=ref_ins.read(file).decode("utf-8",errors="ignore")
                 ans[file]=content 
     return ans
-def AIenhance(id):
+def AIenhance(file,id):
     try:
         ansstr = []
         item = project_detail.objects.filter(id=id).first()
-        rawans = unzip(item.project_file.path)
+        rawans = unzip(file)
         for name, content in rawans.items():
             ansstr.append(f"#{name}\n code:-{content}\n")
         ansstr = "".join(ansstr)
@@ -93,7 +93,7 @@ def additem(request):
         cat=Category.objects.filter(cat_name=category).first()
         project_ins= project.objects.create(p_name=name,user=request.user)
         det_ins=project_detail.objects.create(project=project_ins,project_file=file,price=price,description=description,image=image,category=cat,project_document=document)
-        t=threading.Thread(target=AIenhance,args=(det_ins.id,))
+        t=threading.Thread(target=AIenhance,args=(file,det_ins.id,))
         t.start()
         items=project_detail.objects.filter(project__user=request.user).order_by('-project__datein')
         return render(request,'partials/itemcard.html',{'items':items})
