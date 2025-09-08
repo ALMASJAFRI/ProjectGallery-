@@ -18,6 +18,7 @@ import cloudinary_storage
 import cloudinary 
 import cloudinary.uploader
 import cloudinary.api
+import os
 # Override locks to no-op functions
 locks.lock = lambda f, flags: True
 locks.unlock = lambda f: True
