@@ -20,13 +20,13 @@ class project(models.Model):
         return self.p_name
 class project_detail(models.Model):
     project=models.ForeignKey(project,on_delete=models.CASCADE)
-    project_file=models.FileField(upload_to="projects/",storage=RawMediaCloudinaryStorage())
-    project_document=models.FileField(upload_to='project_document',storage=RawMediaCloudinaryStorage()) 
+    project_file=models.FileField(upload_to="projects/",storage=RawMediaCloudinaryStorage(),null=True,blank=True)
+    project_document=models.FileField(upload_to='project_document',storage=RawMediaCloudinaryStorage(),null=True,blank=True) 
     price=models.IntegerField()
     description=models.TextField()
     features=models.TextField(null=True,blank=True)
     #image=models.FileField(upload_to='project_img')
-    image=CloudinaryField('image')
+    image=CloudinaryField('image',null=True,blank=True)
     category=models.ForeignKey(Category,on_delete=models.CASCADE)
     purchased=models.IntegerField(default=0.0,null=True,blank=True)
     
