@@ -12,9 +12,12 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import dj_database_url
 from pathlib import Path
 import sys
-import os
 from django.core.files import locks
 from decouple import config
+import cloudinary_storage
+import cloudinary 
+import cloudinary.uploader
+import cloudinary.api
 # Override locks to no-op functions
 locks.lock = lambda f, flags: True
 locks.unlock = lambda f: True
@@ -131,15 +134,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+CLOUDINARY_STORAGE = {
+     'CLOUD_NAME': 'dehjnpqil',
+     'API_KEY': '322838393225594',
+     'API_SECRET': '_v4YhMB5ma2ww9vuRUZQQIC5xGw',
+     #'RESOURCE_TYPE': 'raw',  # 👈 Force raw files instead of images
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR /'media'
+#MEDIA_URL = '/media/'
+#MEDIA_ROOT = BASE_DIR /'media'
 
 AUTH_USER_MODEL='accounts.Custom_User'
 
