@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,PermissionsMixin
 class usermanager(BaseUserManager):
     def create_user(self,email,password=None,**extra_fields):
@@ -28,7 +29,7 @@ class Custom_User(AbstractBaseUser,PermissionsMixin):
     phone=models.CharField(null=True,blank=True)
     first_name=models.CharField(max_length=50)
     last_name=models.CharField(max_length=50)
-    photo=models.FileField(upload_to="userpicture/",null=True,blank=True)
+    photo=CloudinaryField('image')
     token=models.CharField()
     is_staff=models.BooleanField(default=True)
     is_active=models.BooleanField(default=False)
