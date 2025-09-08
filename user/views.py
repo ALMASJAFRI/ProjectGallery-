@@ -161,7 +161,8 @@ def validatepay(request):
             order.status=True
             order.save()
             projectins=project_detail.objects.filter(project__p_name=productinfo).first()
-            transaction.on_commit(lambda:threading.Thread(target=sendfiles,args=(amount,projectins.id,email)).start())
+            t=threading.Thread(target=sendfiles,args=(amount,projectins.id,email))
+            t.start()
             messages.success(request,"Payment Done")
             data={'txnid':txnid,'email':email,'product':productinfo,'amount':amount,'paymentid':mihpayid}
             return render(request,"accounts/successpage.html",data)
@@ -187,17 +188,17 @@ def sendfiles(price,id,email):
     docurl=doc.url
     codeurl=codefile.url 
     if abs(price - amount) < Decimal('0.01'):
-        message=f"Download Your Files Here./n Document:https://smartprojectgallery.onrender.com{docurl} /n Code:https://smartprojectgallery.onrender.com{codeurl}"
+        message=f"Download Your Files Here./n Documents:-{docurl} /n Code:-{codeurl}"
         email_sent=EmailMessage(subject=subject,body=message,from_email=from_email,to=to)
         email_sent.send()
         print("sent")
     elif abs(price - (amount * Decimal('0.25'))) < Decimal('0.01'):
-        message=f"Download Your Files Here. /n Code:https://smartprojectgallery.onrender.com{codeurl}"
+        message=f"Download Your Files Here. /n Code:{codeurl}"
         email_sent=EmailMessage(subject=subject,body=message,from_email=from_email,to=to)
         email_sent.send()
         print("sent")
     elif abs(price - (amount * Decimal('0.75'))) < Decimal('0.01'):
-        message=f"Download Your Files Here. /n Document:https://smartprojectgallery.onrender.com{docurl}"
+        message=f"Download Your Files Here. /n Document:{docurl}"
         email_sent=EmailMessage(subject=subject,body=message,from_email=from_email,to=to)
         email_sent.send()
         print("sent")
