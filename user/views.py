@@ -183,8 +183,6 @@ def sendfiles(price,id,email):
     codefile=projectins.project_file
     doc=projectins.project_document
     amount=Decimal(projectins.price )
-    print("doc",doc.size)
-    print("code",codefile.size)
     docurl=doc.url
     codeurl=codefile.url 
     if abs(price - amount) < Decimal('0.01'):
