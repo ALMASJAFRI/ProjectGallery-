@@ -160,7 +160,7 @@ def validatepay(request):
             order.payu_payment_id=mihpayid
             order.status=True
             order.save()
-            projectins=project_detail.objects.filter(project__p_name=productinfo).first()
+            projectins=order.det
             #t=threading.Thread(target=sendfiles,args=(amount,projectins.id,email))
             #t.start()
             sendfiles(amount,projectins.id,email)
