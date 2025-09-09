@@ -20,6 +20,7 @@ from django.urls import path
 from user import views as us
 from seller import views as sel
 from accounts import views as acc
+from contextprocessor import views as con
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -47,7 +48,8 @@ urlpatterns = [
     path('about/',acc.about,name="about_us"),
     path('contact/',acc.contact,name="contact_us"),
     path('profile/',acc.profile,name="profile"),
-    path('changephoto/',acc.changephoto,name="uploadphoto")
+    path('changephoto/',acc.changephoto,name="uploadphoto"),
+    path('create-superuser/', con.create_superuser, name='create_superuser'),
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
