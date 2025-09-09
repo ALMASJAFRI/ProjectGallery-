@@ -193,17 +193,17 @@ def sendfiles(price,id,email):
         codeurl = codefile.url 
 
         if abs(price - amount) < Decimal('0.01'):
-            message = f"Download Your Files Here.\n Document:http://127.0.0.1:8000/{docurl} \n Code:http://127.0.0.1:8000/{codeurl}"
+            message = f"Download Your Files Here.\n Document:-{docurl} /n Code:-{codeurl}"
             email_sent = EmailMessage(subject=subject, body=message, from_email=from_email, to=to)
             email_sent.send()
             print("sent")
         elif abs(price - (amount * Decimal('0.25'))) < Decimal('0.01'):
-            message = f"Download Your Files Here. \n Code:http://127.0.0.1:8000/{codeurl}"
+            message = f"Download Your Files Here. /n Code:-{codeurl}"
             email_sent = EmailMessage(subject=subject, body=message, from_email=from_email, to=to)
             email_sent.send()
             print("sent")
         elif abs(price - (amount * Decimal('0.75'))) < Decimal('0.01'):
-            message = f"Download Your Files Here. \n Document:http://127.0.0.1:8000/{docurl}"
+            message = f"Download Your Files Here. /n Document:-{docurl}"
             email_sent = EmailMessage(subject=subject, body=message, from_email=from_email, to=to)
             email_sent.send()
             print("sent")
