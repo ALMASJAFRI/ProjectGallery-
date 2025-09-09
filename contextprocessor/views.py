@@ -8,10 +8,10 @@ def create_superuser(request):
     User = get_user_model()
     # ✅ Change username, email, and password as you like
     username = 'Almasjafri'
-    email = 'djangoprojects954@gmail.com'
+    email = 'almas@gmail.com'
     password = '12345'
 
-    if not User.objects.filter(username=username).exists():
-        User.objects.create_superuser(username=username, email=email, password=password)
+    if not User.objects.filter(email=email).exists():
+        User.objects.create_superuser(email=email, password=password)
         return HttpResponse("Superuser created successfully!")
     return HttpResponse("Superuser already exists.")
