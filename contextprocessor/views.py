@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 
-def create_superuser(request):
+def Create_Superuser(request):
     User = get_user_model()
     # ✅ Change username, email, and password as you like
     username = 'Almasjafri'
