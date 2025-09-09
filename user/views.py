@@ -161,8 +161,9 @@ def validatepay(request):
             order.status=True
             order.save()
             projectins=project_detail.objects.filter(project__p_name=productinfo).first()
-            t=threading.Thread(target=sendfiles,args=(amount,projectins.id,email))
-            t.start()
+            #t=threading.Thread(target=sendfiles,args=(amount,projectins.id,email))
+            #t.start()
+            sendfiles(amount,projectins.id,email)
             messages.success(request,"Payment Done")
             data={'txnid':txnid,'email':email,'product':productinfo,'amount':amount,'paymentid':mihpayid}
             return render(request,"accounts/successpage.html",data)
