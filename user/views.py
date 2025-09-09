@@ -175,39 +175,42 @@ def validatepay(request):
             return render(request,"accounts/failpage.html",data)
     return HttpResponse("bad request 404")
 def sendfiles(price,id,email):
-    price=Decimal(price)
-    subject="Purchase successful !!"
-    from_email="djangoprojects954@gmail.com"
-    to=[email]
-    message=""
-    projectins=project_detail.objects.get(id=id)
-    codefile=projectins.project_file
-    doc=projectins.project_document
-    amount=Decimal(projectins.price )
-    print("doc",doc.size)
-    print("code",codefile.size)
-    print('price',price)
-    print('amount',amount)
-    docurl=doc.url
-    codeurl=codefile.url 
-    if abs(price - amount) < Decimal('0.01'):
-        message=f"Download Your Files Here./n Document:http://127.0.0.1:8000/{docurl} /n Code:http://127.0.0.1:8000/{codeurl}"
-        email_sent=EmailMessage(subject=subject,body=message,from_email=from_email,to=to)
-        email_sent.send()
-        print("sent")
-    elif abs(price - (amount * Decimal('0.25'))) < Decimal('0.01'):
-        message=f"Download Your Files Here. /n Code:http://127.0.0.1:8000/{codeurl}"
-        email_sent=EmailMessage(subject=subject,body=message,from_email=from_email,to=to)
-        email_sent.send()
-        print("sent")
-    elif abs(price - (amount * Decimal('0.75'))) < Decimal('0.01'):
-        message=f"Download Your Files Here. /n Document:http://127.0.0.1:8000/{docurl}"
-        email_sent=EmailMessage(subject=subject,body=message,from_email=from_email,to=to)
-        email_sent.send()
-        print("sent")
-    else:
-        print("No Variant Found")
-    
+    try:
+        price = Decimal(price)
+        subject = "Purchase successful !!"
+        from_email = "djangoprojects954@gmail.com"
+        to = [email]
+        message = ""
+        projectins = project_detail.objects.get(id=id)
+        codefile = projectins.project_file
+        doc = projectins.project_document
+        amount = Decimal(projectins.price)
+        print("doc", doc.size)
+        print("code", codefile.size)
+        print('price', price)
+        print('amount', amount)
+        docurl = doc.url
+        codeurl = codefile.url 
+
+        if abs(price - amount) < Decimal('0.01'):
+            message = f"Download Your Files Here.\n Document:http://127.0.0.1:8000/{docurl} \n Code:http://127.0.0.1:8000/{codeurl}"
+            email_sent = EmailMessage(subject=subject, body=message, from_email=from_email, to=to)
+            email_sent.send()
+            print("sent")
+        elif abs(price - (amount * Decimal('0.25'))) < Decimal('0.01'):
+            message = f"Download Your Files Here. \n Code:http://127.0.0.1:8000/{codeurl}"
+            email_sent = EmailMessage(subject=subject, body=message, from_email=from_email, to=to)
+            email_sent.send()
+            print("sent")
+        elif abs(price - (amount * Decimal('0.75'))) < Decimal('0.01'):
+            message = f"Download Your Files Here. \n Document:http://127.0.0.1:8000/{docurl}"
+            email_sent = EmailMessage(subject=subject, body=message, from_email=from_email, to=to)
+            email_sent.send()
+            print("sent")
+        else:
+            print("No Variant Found")
+    except Exception as e:
+        print("⚠️ Error in sending email:", str(e))
         
         
 def test(request):
