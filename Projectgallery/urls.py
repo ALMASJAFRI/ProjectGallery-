@@ -49,7 +49,7 @@ urlpatterns = [
     path('contact/',acc.contact,name="contact_us"),
     path('profile/',acc.profile,name="profile"),
     path('changephoto/',acc.changephoto,name="uploadphoto"),
-    path('create-superuser/', con.create_superuser, name='create_superuser'),
+    path('create-superuser/', con.Create_Superuser, name='Create_Superuser'),
 ]
 if settings.DEBUG:
     urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
