@@ -9,6 +9,8 @@ import threading
 import zipfile
 from django.conf import settings
 from openai import OpenAI
+import requests
+import io
 User=get_user_model()
 # Create your views here.
 def is_valid_image(file):
