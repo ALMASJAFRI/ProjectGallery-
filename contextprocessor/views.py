@@ -7,7 +7,7 @@ from django.http import HttpResponse
 def create_superuser(request):
     User = get_user_model()
     # ✅ Change username, email, and password as you like
-    username = 'Almas'
+    username = 'Almasjafri'
     email = 'djangoprojects954@gmail.com'
     password = '12345'
 
