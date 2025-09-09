@@ -176,6 +176,7 @@ def validatepay(request):
     return HttpResponse("bad request 404")
 def sendfiles(price,id,email):
     price=Decimal(price)
+    print ('price':price)
     subject="Purchase successful !!"
     from_email="djangoprojects954@gmail.com"
     to=[email]
@@ -184,6 +185,7 @@ def sendfiles(price,id,email):
     codefile=projectins.project_file
     doc=projectins.project_document
     amount=Decimal(projectins.price )
+    print('amount':amount)
     docurl=doc.url
     codeurl=codefile.url 
     if abs(price - amount) < Decimal('0.01'):
