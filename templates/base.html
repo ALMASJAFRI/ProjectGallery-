@@ -7,34 +7,174 @@
   <title>{{ request.path }}</title>
 
   <!-- Tailwind (offline build) -->
-  <script src="{% static 'Css/tailwind.js' %}"></script>
+  <script src="{% static 'css/tailwind.js' %}"></script>
 
   <!-- DaisyUI core styles -->
-  <link href="{% static 'Css/daisyui.css' %}" rel="stylesheet">
+  <link href="{% static 'css/daisyui.css' %}" rel="stylesheet">
 
   <!-- DaisyUI themes -->
-  <link href="{% static 'Css/themes.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/themes.min.css' %}" rel="stylesheet">
+
   <!-- Htmx -->
   <script src="{% static 'js/htmx.min.js' %}"></script>
+
+  <style>
+    /* Increase navbar vertical height */
+    nav.navbar-custom {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    /* Increase footer height */
+    footer.footer-custom {
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+    }
+
+    /* Bigger navbar buttons */
+    nav.navbar-custom .btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.05rem;
+    }
+
+    /* Keep search button consistent */
+    nav.navbar-custom .btn-square {
+      padding: 0.65rem;
+    }
+
+    /* Bigger logo */
+    nav.navbar-custom img.logo {
+      width: 3rem;   /* 48px */
+      height: 3rem;  /* 48px */
+    }
+
+    /* Slightly larger text beside logo */
+    nav.navbar-custom .logo-text {
+      font-size: 1.25rem;
+    }
+  </style>
 </head>
 <body class="flex flex-col min-h-screen font-sans">
   
   <!-- Navbar -->
-<nav class="w-full bg-black shadow-md px-4 py-2 flex items-center justify-between flex-wrap">
+<nav class="navbar-custom w-full bg-black shadow-md px-4 flex items-center justify-between flex-wrap">
   
   <!-- Left: Dashboard + Logo -->
   <div class="flex items-center space-x-3">
     {% if user.is_seller and request.path == '/' %}
-      <a href="{% url 'sellerdash' %}" class="btn btn-primary btn-sm">Dashboard</a>
+      <a href="{% url 'sellerdash' %}" class="btn btn-primary">Dashboard</a>
     {% endif %}
     <a href="/" class="flex items-center space-x-2">
-      <img src="{% static 'images/logo.jpg' %}" class="rounded-full w-10 h-10" alt="Logo">
-      <span class="font-bold text-lg">Project Gallery</span>
+      <img src="{% static 'images/logo.jpg' %}" class="logo rounded-full" alt="Logo">
+      <span class="logo-text font-bold">Project Gallery</span>
     </a>
   </div>
 
   <!-- Center: Search -->
   <div class="flex-grow flex justify-center mt-3 md:mt-0">
+    <div class="form-control w-full max-w-xs">
+      <div class="input-group">
+        {% if request.path == '/sellerdas/' and user.is_seller %}
+          <input 
+            type="text" 
+            placeholder="Search…" 
+            class="input input-bordered w-full"
+            hx-get="{% url 'searchsell' %}" 
+            hx-target="#cardadd"
+            hx-swap="innerHTML"
+            hx-trigger="keyup"
+            name="element"
+          />
+        {% else %}
+          <input 
+            type="text" 
+            placeholder="Search…" 
+            class="input input-bordered w-full"
+            hx-get="{% url 'search' %}" 
+            hx-target="#cardadd"
+            hx-swap="innerHTML"
+            hx-trigger="keyup"
+            hx-params="*"
+            name="element"
+          />
+        {% endif %}
+        <button class="btn btn-square">🔍</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Auth Buttons -->
+  <div class="flex items-center space-x-2 mt-2 md:mt-0">
+    <a href="{% url 'cart' %}" class="btn btn-success z-10">WISHED</a>
+    {% if user.is_authenticated %}
+      <label for="register" class="btn btn-error z-10">Register</label>
+    {% else %}
+      <label for="login" class="btn btn-error z-10">Login</label>
+      <label for="register" class="btn btn-error z-10">Register</label>
+    {% endif %}
+  </div>
+</nav>
+  
+  <!-- Sidebar -->
+  <div class="fixed left-0 top-20 h-full z-50">
+    <div class="bg-gray-100 rounded-lg w-40 p-2 ms-2 mt-6 ml-2 shadow-lg">
+      <details class="w-full">
+        <summary class="cursor-pointer font-semibold px-2 py-1 hover:bg-gray-100 rounded">
+          MENU
+        </summary>
+        <ul class="mt-2 space-y-1">
+          <!-- Logout -->
+          <li>
+            <a href="{% url 'log_out' %}" 
+               class="block px-2 py-1 rounded hover:bg-gray-200">
+              Log Out
+            </a>
+          </li>
+          <div class="dropdown dropdown-right h-full">
+            <div tabindex="0" role="button" class="btn m-1">Categories </div>
+            <ul tabindex="0" class="dropdown-content menu bg-gray-100 rounded-box z-1 w-52 p-2 shadow-sm">
+              {% if categories %}
+              {% for category in categories %}
+              <li><a hx-get="{% url 'search' %}?element={{category.cat_name}}" hx-target="#cardadd" hx-swap="innerHTML">{{category.cat_name}}</a></li>
+              {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+          <li>
+            <a href="{% url 'profile' %}" 
+               class="block px-2 py-1 rounded hover:bg-gray-200">
+              Profile
+            </a>
+          </li>
+        </ul>
+      </details>
+    </div>
+  </div>
+
+  <!-- Sidebar + Main -->
+  <main class="flex-1 bg-base-100 relative">
+    <div class="bg-gray-100 min-h-screen p-4">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Messages + Components -->
+  <div id="messagesbase">{% include 'messages.html' %}</div>
+  <div id="logincomponent">{% include 'accounts/login.html' %}</div>
+  <div id="registercomponent">{% include 'accounts/register.html' %}</div>
+
+  <!-- Footer -->
+  <footer class="footer-custom bg-black text-white mt-auto">
+    <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+      <div class="flex gap-6 text-sm">
+        <a href="{% url 'about_us' %}">About Us</a>
+        <a href="{% url 'contact_us' %}">Contact Us</a>
+      </div>
+      <p class="text-center text-sm mt-2 md:mt-0">© 2025 Project Gallery</p>
+    </div>
+  </footer>
+</body>
+</html>  <div class="flex-grow flex justify-center mt-3 md:mt-0">
     <div class="form-control w-full max-w-xs">
       <div class="input-group">
         {% if request.path == '/sellerdas/' and user.is_seller %}
