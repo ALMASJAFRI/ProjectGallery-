@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+
  <h2 id="welcome" style="font-size: 2rem; font-weight: bold; text-align:center; margin-top: 20px;"></h2>
 <script>
     const text = "Welcome {{user.name|escapejs}} Sell Now";
@@ -34,9 +36,8 @@
         hx-post="{% url 'additem' %}"
         hx-target="#cardadd"
         hx-swap="innerHTML"
-      >
+         >
         {% csrf_token %}
-
         <div>
           <label class="label font-semibold">Project ZIP File</label>
           <input type="file" class="file-input file-input-bordered w-full rounded-full" name="item_file" required>
@@ -77,10 +78,12 @@
           <input type="file" accept="image/*" class="file-input file-input-bordered w-full rounded-full" name="item_image" required>
         </div>
 
-        <button type="submit" class="btn btn-primary w-full mt-2">Sell it</button>
+        <button id="sellBtn" type="submit" class="btn btn-primary w-full mt-2">Sell it</button>
       </form>
     </div>
-
+     <div id="loader" class="text-center mt-3 hidden">
+     <span class="loading loading-spinner loading-lg"></span>
+     </div>
     <div class="modal-action">
       <form method="dialog">
         <button class="btn">Close</button>
@@ -88,8 +91,28 @@
     </div>
   </div>
 </dialog>
-<div id="cardadd" class="mb-3" >
+<div id="cardadd" class="mb-3 relative min-h-[200px]">
     {% include "messages.html" %}
     {% include "partials/itemcard.html" %}
 </div>
+<script>
+  document.addEventListener("htmx:beforeRequest", function(evt) {
+      if (evt.target.closest("form")) {  // only affect forms
+          let btn = document.getElementById("sellBtn");
+          btn.disabled = true;
+          btn.innerText = "Uploading...";
+          document.getElementById("loader").classList.remove("hidden");
+      }
+  });
+
+  document.addEventListener("htmx:afterRequest", function(evt) {
+      if (evt.target.closest("form")) {
+          let btn = document.getElementById("sellBtn");
+          btn.disabled = false;
+          btn.innerText = "Sell it";
+          document.getElementById("loader").classList.add("hidden");
+      }
+  });
+</script>
+
 {% endblock %}
