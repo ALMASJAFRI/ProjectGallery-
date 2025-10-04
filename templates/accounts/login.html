@@ -6,11 +6,14 @@
     <label for="login" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
     <h5 class="text-lg font-bold mb-3">Welcome Back! Please Login...</h5>
 
-    <form
-      method="POST"
-      class="space-y-2"
-      action="{% url 'login_page' %}"
-    >
+    <form 
+  method="POST"
+  class="space-y-2"
+  hx-post="{% url 'login_page' %}"
+  hx-target="#messages"
+  hx-swap="innerHTML"
+  hx-trigger="submit"
+>
       {% csrf_token %}
       <div id="messages">{% include 'messages.html' %}</div>
 
@@ -47,5 +50,6 @@
     </form>
   </div>
       </div>
+
 
 
