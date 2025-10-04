@@ -9,10 +9,7 @@
     <form 
   method="POST"
   class="space-y-2"
-  hx-post="{% url 'login_page' %}"
-  hx-target="#messages"
-  hx-swap="innerHTML"
-  hx-trigger="submit"
+  action="{% url 'login_page' %}"
 >
       {% csrf_token %}
       <div id="messages">{% include 'messages.html' %}</div>
@@ -50,6 +47,7 @@
     </form>
   </div>
       </div>
+
 
 
 
