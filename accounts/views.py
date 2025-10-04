@@ -79,9 +79,7 @@ def login_page(request):
             return render(request,'messages.html')
         login(request,user)
         messages.success(request,"login successful!!")
-        response = HttpResponse()
-        response['HX-Redirect'] = '/home/'   # or use reverse('home')
-        return response
+        return redirect('home')
     return render(request,'accounts/login.html')
 @login_required
 def logoutpage(request):
