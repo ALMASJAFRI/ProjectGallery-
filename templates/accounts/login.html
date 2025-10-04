@@ -1,0 +1,54 @@
+<!-- LOGIN MODAL -->
+<input type="checkbox" id="login" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box relative">
+    <!-- Close button -->
+    <label for="login" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <h5 class="text-lg font-bold mb-3">Welcome Back! Please Login...</h5>
+
+    <form
+      method="POST"
+      class="space-y-2"
+      hx-post="{% url 'login_page' %}"
+      hx-target="#messages"
+      hx-swap="innerHTML"
+      hx-trigger="submit"
+      hx-headers='{"Cache-Control":"no-cache"}'
+      hx-refresh="true"
+    >
+      {% csrf_token %}
+      <div id="messages">{% include 'messages.html' %}</div>
+
+      <input 
+        type="email" 
+        name="email" 
+        placeholder="@email" 
+        class="input input-bordered w-full" 
+        required
+      >
+
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="password" 
+        class="input input-bordered w-full" 
+        required
+      >
+
+      <input 
+        type="text" 
+        name="name" 
+        placeholder="@name" 
+        class="input input-bordered w-full"
+        required
+      >
+
+      <button type="submit" class="btn btn-primary w-full mt-2">Login</button>
+
+      <div class="mt-3 text-center">
+        <h3 class="font-semibold">Don’t Have an Account?</h3>
+        <label for="register" class="btn btn-success mt-2 cursor-pointer">Register</label>
+      </div>
+    </form>
+  </div>
+      </div>
