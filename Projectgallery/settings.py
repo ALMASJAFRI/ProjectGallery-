@@ -155,14 +155,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='accounts.Custom_User'
 
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mailersend.net'
-EMAIL_PORT = 587  # or 2525
+EMAIL_HOST = config('EMAIL_HOST')  # Use Gmail SMTP
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'MS_5iIGsG@test-r9084zv9mdvgw63d.mlsender.net'
-EMAIL_HOST_PASSWORD = 'mssp.ZQCnMxF.pq3enl69ek7l2vwr.r22SKtl'
-#DEFAULT_FROM_EMAIL = 'yourname@yourdomain.com'  # optional, what your emails appear from
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 STATIC_URL="static/"
 STATICFILES_DIRS=[BASE_DIR/'static']
 STATIC_ROOT=BASE_DIR/"staticfiles"
