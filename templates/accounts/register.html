@@ -14,7 +14,6 @@
       hx-swap="innerHTML"
       hx-trigger="submit"
       hx-headers='{"Cache-Control":"no-cache"}'
-      hx-refresh="true"
     >
       {% csrf_token %}
       <div id="messages">{% include 'messages.html' %}</div>
