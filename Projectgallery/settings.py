@@ -155,13 +155,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='accounts.Custom_User'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.elasticemail.com'
-EMAIL_PORT = 2525  # You can also try 587 or 465 if needed
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-EMAIL_HOST_USER = 'djangoprojects954@gmail.com'
-EMAIL_HOST_PASSWORD = 'B2B5BC0750380DCC5A05A2D4F0B91A70655E'
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT =587 #config('EMAIL_PORT',cast=int)
+EMAIL_USE_TLS =config('EMAIL_USE_TLS',cast=bool)
+EMAIL_HOST_USER =config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD =config('EMAIL_HOST_PASSWORD')
+
 STATIC_URL="static/"
 STATICFILES_DIRS=[BASE_DIR/'static']
 STATIC_ROOT=BASE_DIR/"staticfiles"
