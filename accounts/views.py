@@ -11,41 +11,52 @@ User=get_user_model()
 
 # Create your views here.
 def register(request):
-    if request.method=="POST":
-        email=request.POST.get('email')
-        password=request.POST.get('password')
-        name=request.POST.get('name')
-        first_name=request.POST.get('first_name')
-        last_name=request.POST.get('last_name')
-        status=request.POST.get('status')
-        phone=request.POST.get('phone')
-        if User.objects.filter(email=email).first():
-            messages.error(request,"email already exists")
-            return render(request,'messages.html')
+    if request.method == "POST":
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        name = request.POST.get('name')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        status = request.POST.get('status')
+        phone = request.POST.get('phone')
+
+        print("📩 Register request received for:", email)
+
+        if User.objects.filter(email=email).exists():
+            print("❌ Email already exists:", email)
+            messages.error(request, "Email already exists")
+            return render(request, 'messages.html')
+
         if not email:
-            messages.error(request,"Email is required")
-            return render(request,'messages.html')
+            messages.error(request, "Email is required")
+            return render(request, 'messages.html')
+
         if not password:
-            messages.error(request,"password is required")
-            return render(request,'messages.html')
-        user=User.objects.create_user(email=email,password=password)
-        user.first_name=first_name
-        user.last_name=last_name
-        user.name=name
+            messages.error(request, "Password is required")
+            return render(request, 'messages.html')
+
+        user = User.objects.create_user(email=email, password=password)
+        user.first_name = first_name
+        user.last_name = last_name
+        user.name = name
         if phone:
-            user.phone=phone
-        if status=='seller':
-            user.is_seller=True
-        token=str(uuid.uuid4())
-        user.token=token
+            user.phone = phone
+        if status == 'seller':
+            user.is_seller = True
+        token = str(uuid.uuid4())
+        user.token = token
         user.save()
-        messages.success(request,"email sent")
-        #t=threading.Thread(target=sendmail,args=(email,token))
-        #t.start()
-        sendmail(email,token)
-        return render(request,'messages.html')
-    return render(request,'accounts/register.html')
-        
+
+        try:
+            sendmail(email, token)
+            messages.success(request, "✅ Verification email sent successfully!")
+            print("✅ Email sent successfully to", email)
+        except Exception as e:
+            print("❌ Error while sending email:", e)
+            messages.error(request, f"Error sending email: {e}")
+
+        return render(request, 'messages.html')
+    return render(request, 'accounts/register.html')
 def sendmail(email,token):
     subject="Request To Activate Account....!"
     message = f"Please Verify Your Email\n click here https://smartprojectgallery.onrender.com/activate/{token}/"
