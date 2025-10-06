@@ -8,15 +8,13 @@
 
     <form
       method="POST"
-      class="space-y-2"
       hx-post="{% url 'register' %}"
-      hx-target="#messages"
+      hx-target="#newmessages"
       hx-swap="innerHTML"
       hx-trigger="submit"
-      hx-headers='{"Cache-Control":"no-cache"}'
     >
       {% csrf_token %}
-      <div id="messages">{% include 'messages.html' %}</div>
+      <div id="newmessages">{% include 'messages.html' %}</div>
 
       <input type="text" name="email" placeholder="@email" class="input input-bordered w-full" required>
       <input type="password" name="password" placeholder="password" class="input input-bordered w-full" required>
@@ -24,6 +22,7 @@
       <input type="text" name="first_name" placeholder="@first name" class="input input-bordered w-full">
       <input type="text" name="last_name" placeholder="@last name" class="input input-bordered w-full">
       <input type="text" name="phone" placeholder="@Phone number" class="input input-bordered w-full">
+     <div id="newmessages">{% include 'messages.html' %}</div>
 
       <div class="flex gap-4 items-center mt-1">
         <label class="flex items-center gap-1">
