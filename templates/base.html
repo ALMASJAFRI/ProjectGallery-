@@ -2,9 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  {% if request.path == '/' %}
+    <title>Project Gallery - Home</title>
+  {% else %}
   <title>{{ request.path }}</title>
+  {% endif %}
 
   <!-- Tailwind (offline build) -->
   <script src="{% static 'Css/tailwind.js' %}"></script>
@@ -19,143 +23,191 @@
   <script src="{% static 'js/htmx.min.js' %}"></script>
 
   <style>
-    /* Increase navbar vertical height */
-    nav.navbar-custom {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
+    /* page */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e0c3fc 50%, #8ec5fc 100%);
+      min-height: 100vh;
     }
 
-    /* Increase footer height */
-    footer.footer-custom {
-      padding-top: 1.25rem;
-      padding-bottom: 1.25rem;
+    /* default placeholder color via CSS variable (fallback) */
+    input {
+      --placeholder-color: #555; /* default dark-gray placeholder for light inputs */
     }
+
+    /* explicit class for seller (dark input) */
+    .seller-search {
+      --placeholder-color: #eaeaea; /* light placeholder for dark input */
+    }
+
+    /* Vendor-prefixed placeholder rules and strong specificity */
+    input::placeholder,
+    input::-webkit-input-placeholder,
+    input::-moz-placeholder,
+    input:-ms-input-placeholder,
+    input::-ms-input-placeholder {
+      color: var(--placeholder-color) !important;
+      opacity: 1 !important; /* ensure full visibility */
+      font-weight: 500;
+    }
+
+    /* Navbar / layout */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #22223b 60%, #4a4e69 100%);
+      padding: 1rem 2rem;
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(34,34,59,0.08);
+      flex-wrap: wrap;
+    }
+
+    .navbar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .navbar .auth-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .navbar .auth-buttons a,
+    .navbar .auth-buttons label {
+      background: linear-gradient(90deg, #8ec5fc 0%, #e0c3fc 100%);
+      color: #22223b;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(142,197,252,0.12);
+      cursor: pointer;
+    }
+
+    .navbar .auth-buttons a:hover,
+    .navbar .auth-buttons label:hover {
+      background: linear-gradient(90deg, #f7971e 0%, #ffd200 100%);
+      color: #22223b;
+    }
+
+    .navbar .search-bar {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
     footer.footer-custom {
+      background: linear-gradient(90deg, #22223b 60%, #4a4e69 100%);
+      color: #fff;
+      box-shadow: 0 -2px 12px rgba(34,34,59,0.08);
+      padding: 1.25rem 2rem;
       position: relative;
-      z-index: 60; /* higher than sidebar (z-50) */
-    }
-
-    /* Bigger navbar buttons */
-    nav.navbar-custom .btn {
-      padding: 0.75rem 1.5rem;
-      font-size: 1.05rem;
-    }
-
-    /* Keep search button consistent */
-    nav.navbar-custom .btn-square {
-      padding: 0.65rem;
-    }
-
-    /* Bigger logo */
-    nav.navbar-custom img.logo {
-      width: 3rem;   /* 48px */
-      height: 3rem;  /* 48px */
-    }
-
-    /* Slightly larger text beside logo */
-    nav.navbar-custom .logo-text {
-      font-size: 1.25rem;
+      z-index: 60;
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen font-sans">
-  
-  <!-- Navbar -->
-<nav class="navbar-custom w-full bg-black shadow-md px-4 flex items-center justify-between flex-wrap">
-  
-  <!-- Left: Dashboard + Logo -->
-  <div class="flex items-center space-x-3">
-    {% if user.is_seller and request.path == '/' %}
-      <a href="{% url 'sellerdash' %}" class="btn btn-primary">Dashboard</a>
-    {% endif %}
-    <a href="/" class="flex items-center space-x-2">
-      <img src="{% static 'images/logo.jpg' %}" class="logo rounded-full" alt="Logo">
-      <span class="logo-text font-bold">Project Gallery</span>
-    </a>
-  </div>
+<body class="flex flex-col min-h-screen">
 
-  <!-- Center: Search -->
-  <div class="flex-grow flex justify-center mt-3 md:mt-0">
-    <div class="form-control w-full max-w-xs">
-      <div class="input-group">
-        {% if request.path == '/sellerdas/' and user.is_seller %}
-          <input 
-            type="text" 
-            placeholder="Search…" 
-            class="input input-bordered w-full"
-            hx-get="{% url 'searchsell' %}" 
-            hx-target="#cardadd"
-            hx-swap="innerHTML"
-            hx-trigger="keyup"
-            name="element"
-          />
-        {% else %}
-          <input 
-            type="text" 
-            placeholder="Search…" 
-            class="input input-bordered w-full"
-            hx-get="{% url 'search' %}" 
-            hx-target="#cardadd"
-            hx-swap="innerHTML"
-            hx-trigger="keyup"
-            hx-params="*"
-            name="element"
-          />
-        {% endif %}
-        <button class="btn btn-square">🔍</button>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <!-- Left: Logo + Dashboard -->
+    <div class="logo">
+      <img src="{% static 'images/logo.jpg' %}" alt="Logo" style="width: 48px; height: 48px; border-radius: 50%;">
+      <span>Project Gallery</span>
+      {% if user.is_seller and request.path == '/' %}
+        <a href="{% url 'sellerdash' %}" style="margin-left: 1rem; background: #4a4e69; padding: 0.4rem 1rem; border-radius: 4px; color: #fff;">Dashboard</a>
+      {% endif %}
+    </div>
+
+    <!-- Center: Search -->
+    <div class="search-bar">
+      <div class="form-control w-full max-w-xs">
+        <div class="input-group">
+          {% if request.path == '/sellerdas/' and user.is_seller %}
+            <!-- seller: explicitly set the css var inline to be ultra-robust -->
+            <input
+              type="text"
+              placeholder="Search…"
+              name="element"
+              hx-get="{% url 'searchsell' %}"
+              hx-target="#cardadd"
+              hx-swap="innerHTML"
+              hx-trigger="keyup"
+              class="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 seller-search"
+              style="--placeholder-color: #eaeaea; background-color: #651e6af6; color: #ffffff; font-weight: 500; font-size: 1rem;"
+            />
+          {% else %}
+            <!-- normal: explicit var as well -->
+            <input
+              type="text"
+              placeholder="Search…"
+              name="element"
+              hx-get="{% url 'search' %}"
+              hx-target="#cardadd"
+              hx-swap="innerHTML"
+              hx-trigger="keyup"
+              hx-params="*"
+              class="w-full px-4 py-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+              style="--placeholder-color: #555; background-color: #ffffff; color: #22223b; font-weight: 500; font-size: 1rem;"
+            />
+          {% endif %}
+          <button class="btn btn-square">🔍</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Right: Auth Buttons -->
-  <div class="flex items-center space-x-2 mt-2 md:mt-0">
-    <a href="{% url 'cart' %}" class="btn btn-success z-10">WISHED</a>
-    {% if user.is_authenticated %}
-      <label for="register" class="btn btn-error z-10">Register</label>
-    {% else %}
-      <label for="login" class="btn btn-error z-10">Login</label>
-      <label for="register" class="btn btn-error z-10">Register</label>
-    {% endif %}
-  </div>
-</nav>
-  
+    <!-- Right: Auth Buttons -->
+    <div class="auth-buttons">
+      <a href="{% url 'cart' %}">WISHED</a>
+      {% if user.is_authenticated %}
+        <label for="register">Register</label>
+      {% else %}
+        <label for="login">Login</label>
+        <label for="register">Register</label>
+      {% endif %}
+    </div>
+  </nav>
+
   <!-- Sidebar -->
   <div class="fixed left-0 top-20 z-50">
     <div class="bg-gray-100 rounded-lg w-40 p-2 ms-2 mt-6 ml-2 shadow-lg">
       <details class="w-full">
-        <summary class="cursor-pointer font-semibold px-2 py-1 hover:bg-gray-100 rounded">
-          MENU
-        </summary>
+        <summary class="cursor-pointer font-semibold px-2 py-1 hover:bg-gray-100 rounded">MENU</summary>
         <ul class="mt-2 space-y-1">
-          <!-- Logout -->
           <li>
-            <a href="{% url 'log_out' %}" 
-               class="block px-2 py-1 rounded hover:bg-gray-200">
-              Log Out
-            </a>
+            <a href="{% url 'log_out' %}" class="block px-2 py-1 rounded hover:bg-gray-200">Log Out</a>
           </li>
           <div class="dropdown dropdown-right h-full">
-            <div tabindex="0" role="button" class="btn m-1">Categories </div>
+            <div tabindex="0" role="button" class="btn m-1">Categories</div>
             <ul tabindex="0" class="dropdown-content menu bg-gray-100 rounded-box z-1 w-52 p-2 shadow-sm">
               {% if categories %}
-              {% for category in categories %}
-              <li><a hx-get="{% url 'search' %}?element={{category.cat_name}}" hx-target="#cardadd" hx-swap="innerHTML">{{category.cat_name}}</a></li>
-              {% endfor %}
+                {% for category in categories %}
+                  <li><a hx-get="{% url 'search' %}?element={{category.cat_name}}" hx-target="#cardadd" hx-swap="innerHTML">{{category.cat_name}}</a></li>
+                {% endfor %}
               {% endif %}
             </ul>
           </div>
           <li>
-            <a href="{% url 'profile' %}" 
-               class="block px-2 py-1 rounded hover:bg-gray-200">
-              Profile
-            </a>
+            <a href="{% url 'profile' %}" class="block px-2 py-1 rounded hover:bg-gray-200">Profile</a>
           </li>
         </ul>
       </details>
     </div>
   </div>
 
-  <!-- Sidebar + Main -->
+  <!-- Main Content -->
   <main class="flex-1 bg-base-100 relative">
     <div class="bg-gray-100 min-h-screen p-4">
       {% block content %}{% endblock %}
@@ -168,14 +220,14 @@
   <div id="registercomponent">{% include 'accounts/register.html' %}</div>
 
   <!-- Footer -->
-  <footer class="footer-custom bg-black text-white mt-auto">
+  <footer class="footer-custom">
     <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
       <div class="flex gap-6 text-sm">
-        <a href="{% url 'about_us' %}">About Us</a>
-        <a href="{% url 'contact_us' %}">Contact Us</a>
+        <a href="{% url 'about_us' %}" style="color: #fff; text-decoration: none;">About Us</a>
+        <a href="{% url 'contact_us' %}" style="color: #fff; text-decoration: none;">Contact Us</a>
       </div>
       <p class="text-center text-sm mt-2 md:mt-0">© 2025 Project Gallery</p>
     </div>
   </footer>
 </body>
-  </html>
+</html>
