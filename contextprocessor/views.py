@@ -8,7 +8,7 @@ def Create_Superuser(request):
     User = get_user_model()
     # ✅ Change username, email, and password as you like
     username = 'Almasjafri'
-    email = 'almas@gmail.com'
+    email = 'almas110@gmail.com'
     password = '12345'
 
     if not User.objects.filter(email=email).exists():
