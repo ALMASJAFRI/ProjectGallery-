@@ -19,9 +19,11 @@ def is_valid_image(file):
         return False
     return True
 def is_zip(file):
-    if not file.content_type=="application/zip":
-        return False
-    return True    
+    valid_types = ["application/zip", "application/x-zip-compressed", "application/octet-stream"]
+    if file.content_type in valid_types:
+        return True
+    return False
+  
 def unzip(path):
     ans={}
     content=""
